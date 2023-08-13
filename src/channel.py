@@ -12,6 +12,33 @@ class Channel:
         self.__channel_id = channel_id
         self.title, self.description, self.url, self.subscribers, self.video_count, self.views = self.get_channel_stats()
 
+    def __str__(self):
+        """ Метод возвращающий название и ссылку на канал """
+        return f'{self.title} {(self.url)}'
+
+    def __add__(self, other):
+        """ Метод реализующий сложение подписчиков с каналов """
+        return self.subscribers + other.subscribers
+
+    def __sub__(self, other):
+        """ Метод реализующий вычитание подписчиков с каналов """
+        return self.subscribers - other.subscribers
+
+    def __lt__(self, other):
+        """ Метод реализующий сравнение «меньше» подписчиков с каналов """
+        return self.subscribers < other.subscribers
+
+    def __le__(self, other):
+        """ Метод реализующий сравнение «меньше или равно» подписчиков с каналов """
+        return self.subscribers <= other.subscribers
+
+    def __gt__(self, other):
+        """ Метод реализующий сравнение «больше»  подписчиков с каналов """
+        return self.subscribers > other.subscribers
+
+    def __ge__(self, other):
+        """ Метод реализующий сравнение «больше или равно» подписчиков с каналов """
+        return self.subscribers >= other.subscribers
 
     @classmethod
     def get_service(cls):
@@ -31,7 +58,7 @@ class Channel:
         title = channel['items'][0]['snippet']['title']
         description = channel['items'][0]['snippet']['description']
         url = 'https://www.youtube.com/channel/' + self.__channel_id
-        subscribers = channel['items'][0]['statistics']['subscriberCount']
+        subscribers = int(channel['items'][0]['statistics']['subscriberCount'])
         video_count = channel['items'][0]['statistics']['videoCount']
         views = channel['items'][0]['statistics']['viewCount']
         return title, description, url, subscribers, video_count, views
