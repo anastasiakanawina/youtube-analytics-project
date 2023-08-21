@@ -36,3 +36,5 @@ class PLVideo(Video):
         """Экземпляр инициализируется по id видео и id плейлиста. """
         super().__init__(video_id)
         self.playlist_id = playlist_id
+
+
