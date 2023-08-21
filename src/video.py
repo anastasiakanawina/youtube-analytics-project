@@ -7,11 +7,18 @@ class Video(Channel):
     def __init__(self, video_id) -> None:
         """Экземпляр инициализируется id видео. Дальше все данные будут подтягиваться по API."""
         self.__video_id = video_id
-        self.video_url, self.video_title, self.view_count, self.like_count = self.get_video_stats()
+        try:
+            self.video_url, self.title, self.view_count, self.like_count = self.get_video_stats()
+        except IndexError:
+            print('Видео с данным ID не существует')
+            self.video_url = None
+            self.title = None
+            self.view_count = None
+            self.like_count = None
 
     def __str__(self):
         """ Метод возвращающий название видео """
-        return f'{self.video_title}'
+        return f'{self.title}'
 
     def get_video_stats(self):
         """ Здесь происходит получение статистики видео
@@ -22,11 +29,11 @@ class Video(Channel):
                                                ).execute()
 
         video_url = 'https://www.youtube.com/watch?v=' + self.__video_id
-        video_title: str = video_response['items'][0]['snippet']['title']
+        title: str = video_response['items'][0]['snippet']['title']
         view_count: int = video_response['items'][0]['statistics']['viewCount']
         like_count: int = video_response['items'][0]['statistics']['likeCount']
 
-        return video_url, video_title, view_count, like_count
+        return video_url, title, view_count, like_count
 
 
 class PLVideo(Video):
